@@ -53,6 +53,7 @@ public:
 //#define STRUCT_POINT
 void main()
 
+
 {
 	setlocale(LC_ALL, "");
 
