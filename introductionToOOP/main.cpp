@@ -39,15 +39,28 @@ public:
 		this->x = x;
 		this->y = y;
 	}
+	
 	~Point()
 	{
-		cout << "Destructor:\t\t" << this << endl;
+		// cout << "Destructor:\t\t" << this << endl;
 	}
 
 	//           Metods:
 	void print()const
 	{
 		cout << "X = " << get_x() << "\tY = " << get_y() << endl;
+	}
+	double distance()
+	{
+		return sqrt(x * x + y * y);
+	}
+	double distance(Point& A,Point& B)
+	{
+		Point C(A.x-B.x,A.y-B.y);
+		if (C.x < 0)C.x *= (-1);
+		if (C.y < 0)C.y *= (-1);
+		//C.print();
+		return C.distance();
 	}
 };
 //#define STRUCT_POINT
@@ -68,14 +81,17 @@ void main()
 	cout << pA->x << '\t' << pA->y << endl;
 #endif // STRUCT_POINT
 
-	Point A;
 	//A.set_y(3); 
 	//A.set_x(2);
 	//std::cout << A.get_x() << "\t" << A.get_y() << endl;
-	A.print();
-	Point B = 5;
 	//cout << B.get_x() << "\t" << B.get_y() << endl;
-	B.print();
-	Point C(7, 8);
-	C.print();
+	Point A(24,34);
+	//A.print();
+	Point B(45,65);
+	//B.print();
+	Point C;
+	double dist = Point(23, 43).distance();
+	cout << "Растояние от центра координат к точке : " << dist << endl;
+	double dist_2=C.distance(A,B);
+	cout <<"Растояние от точки 1 к точке 2 : " << dist_2 << endl;
 }
