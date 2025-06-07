@@ -1,6 +1,11 @@
 ﻿#include<iostream>
 
 using namespace std;
+using std::cout;
+using std::cin;
+using std::endl;
+
+
 class Point
 {
 	double x;
@@ -38,11 +43,28 @@ public:
 	{
 		this->x = x;
 		this->y = y;
+		cout << "constructor:\t\t" << this << endl;
 	}
+	Point(const Point& other)
+	{
+		//this - этот обьект
+		//other -тот обьект
+		this->x = other.x;
+		this->y = other.y;
+		cout << "CopyConstructor:\t" << this << endl;
+	}
+	//Point(const Point& other) = delete; //Удаляет Конструктор копирования и таким образом запрещает копирование обьектов
 	
 	~Point()
 	{
-		// cout << "Destructor:\t\t" << this << endl;
+		cout << "Destructor:\t\t" << this << endl;
+	}
+	///                    Operators
+	void operator=(const Point& other)
+	{
+		this->x = other.x;
+		this->y = other.y;
+		cout << "CopyAssignment:\t\t" << this << endl;
 	}
 
 	//           Metods:
@@ -50,23 +72,31 @@ public:
 	{
 		cout << "X = " << get_x() << "\tY = " << get_y() << endl;
 	}
-	double distance()
+	double distance(const Point& other)const
 	{
-		return sqrt(x * x + y * y);
+		double x_distance = this->x - other.x;
+		double y_distance = this->y - other.y;
+		double distance = sqrt(x_distance * x_distance + y_distance * y_distance);
+		return distance;
 	}
-	double distance(Point& A,Point& B)
-	{
-		Point C(A.x-B.x,A.y-B.y);
-		if (C.x < 0)C.x *= (-1);
-		if (C.y < 0)C.y *= (-1);
-		//C.print();
-		return C.distance();
-	}
+	
 };
+double distance(const Point& A, const Point& B)
+{
+	double x_distance = A.get_x() - B.get_x();
+	double y_distance = A.get_y() - B.get_y();
+	return sqrt(x_distance * x_distance + y_distance * y_distance);
+}
+
+
 //#define STRUCT_POINT
+//#define CONSTRUCTORS_CHECK
+//#define DISTANCE_CHECK
+#define ASSIGNMENT_CHECK
+
+
+#define delimetr "\n---------------------------------------------\n"
 void main()
-
-
 {
 	setlocale(LC_ALL, "");
 
@@ -80,18 +110,55 @@ void main()
 	Point* pA = &A;
 	cout << pA->x << '\t' << pA->y << endl;
 #endif // STRUCT_POINT
+#ifdef DISTANCE_CHECK
+	Point A(2, 3);
+	Point B(7, 8);
+	A.print();
+	B.print();
+	cout << delimetr << endl;
+	cout << "Растояние от точки А до точки B :" << A.distance(B) << endl;
+	cout << delimetr << endl;
+	cout << "Растояние от точки B до точки A :" << B.distance(A) << endl;
+	cout << delimetr << endl;
+	cout << "Растояние между точками A и B :" << distance(A, B) << endl;
+	cout << delimetr << endl;
+	cout << "Растояние между точками B и A :" << distance(B, A) << endl;
+	cout << delimetr << endl;
+
+#endif // DISTANCE_CHECK
+#ifdef CONSTRUCTORS_CHECK
 
 	//A.set_y(3); 
 	//A.set_x(2);
 	//std::cout << A.get_x() << "\t" << A.get_y() << endl;
 	//cout << B.get_x() << "\t" << B.get_y() << endl;
-	Point A(24,34);
+	Point A(24, 34);
 	//A.print();
-	Point B(45,65);
+	Point B(45, 65);
 	//B.print();
-	Point C;
-	double dist = Point(23, 43).distance();
-	cout << "Растояние от центра координат к точке : " << dist << endl;
-	double dist_2=C.distance(A,B);
-	cout <<"Растояние от точки 1 к точке 2 : " << dist_2 << endl;
+	Point C(7, 8);
+	C.print();
+	Point D = C;  //CopyConstructor
+	D.print();
+	Point E;
+	E = D;   //CopyAssignment
+	E.print();
+
+#endif // CONSTRUCTORS_CHECK
+#ifdef ASSIGNMENT_CHECK
+
+	int a, b, c;
+	a = b = c = 0;
+	cout << a << '\t' << b << '\t' << c << endl;
+
+	//Point(2,3):---Здесь мы явно вызываем конструктор и таким образом создаем времкнный безымянный обьект
+	cout << Point(2.3).distance(Point(7, 8)) << endl;
+	//Временный безымянные обьекты существуют только в пределах одного выражения, они удаляются из памяти ,после того как выражение выполнилось
+	Point A, B, C;
+	A = B = C = Point(2, 3);
+	A.print();
+	B.print();
+	C.print();
+#endif // ASSIGNMENT_CHECK
+
 }
