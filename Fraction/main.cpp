@@ -1,4 +1,4 @@
-#include<iostream>
+Ôªø#include<iostream>
 
 using std::cout;
 using std::cin;
@@ -35,29 +35,29 @@ public:
 	{
 		this->denominator = denominator;
 	}
-	                   // ÓÌÒÚÛÍÚÓ˚
-	Fraction(int intedger = 0 , int numerator = 0, int denominator = 0)   // ÓÌÒÚÛÍÚÓ ÔÓ ÛÏÓÎ˜‡ÌË˛
+	                   //–ö–æ–Ω—Å—Ç—Ä—É–∫—Ç–æ—Ä—ã
+	Fraction(int intedger = 0 , int numerator = 0, int denominator = 0)   //–ö–æ–Ω—Å—Ç—Ä—É–∫—Ç–æ—Ä –ø–æ —É–º–æ–ª—á–∞–Ω–∏—é
 	{
 			this->intedger = intedger;
 			this->numerator = numerator;
 			this->denominator = denominator;
 	}
-	Fraction(const Fraction& other)   // ÓÌÒÚÛÍÚÓ ÍÓÔËÓ‚‡ÌËˇ
+	Fraction(const Fraction& other)   //–ö–æ–Ω—Å—Ç—Ä—É–∫—Ç–æ—Ä –∫–æ–ø–∏—Ä–æ–≤–∞–Ω–∏—è
 	{
 		this->intedger = other.intedger;
 		this->numerator = other.numerator;
 		this->denominator = other.denominator;
 	}
-	~Fraction(){}             //ƒËÒÚÛÍÚÓ
+	~Fraction(){}             //–î–∏—Å—Ç—Ä—É–∫—Ç–æ—Ä
 
-	                          //‘ÛÌÍˆËË ÍÎ‡ÒÒ‡
-	void operator=(const Fraction& other)  //ÓÔÂ‡ÚÓ ÔËÒ‚‡Ë‚‡ÌËˇ
+	                          //–§—É–Ω–∫—Ü–∏–∏ –∫–ª–∞—Å—Å–∞
+	void operator=(const Fraction& other)  //–æ–ø–µ—Ä–∞—Ç–æ—Ä –ø—Ä–∏—Å–≤–∞–∏–≤–∞–Ω–∏—è
 	{
 		this->intedger = other.intedger;
 		this->numerator = other.numerator;
 		this->denominator = other.denominator;
 	}
-	Fraction operator+(const Fraction& other)const                      //œÂÂ„ÛÁÍ‡ ÓÔÂ‡ÚÓ‡ ÒÎÓÊÂÌËˇ
+	Fraction operator+(const Fraction& other)const                      //–ü–µ—Ä–µ–≥—Ä—É–∑–∫–∞ –æ–ø–µ—Ä–∞—Ç–æ—Ä–∞ —Å–ª–æ–∂–µ–Ω–∏—è
 	{
 		Fraction frac_1;
 		if (this->denominator == other.denominator)
@@ -73,12 +73,12 @@ public:
 			frac_1.numerator = this->numerator * other.denominator + other.numerator * this->denominator;
 			frac_1.denominator = this->denominator * other.denominator;
 		}
-		if (frac_1.numerator > frac_1.denominator)                         // ¬˚‚Ó‰ ˆÂÎÓ„Ó ˜ËÒÎ‡
+		if (frac_1.numerator > frac_1.denominator)                         // –í—ã–≤–æ–¥ —Ü–µ–ª–æ–≥–æ —á–∏—Å–ª–∞
 		{
 			frac_1.intedger += frac_1.numerator / frac_1.denominator;
 			frac_1.numerator = frac_1.numerator % frac_1.denominator;
 		}
-		for (int i = 2; i < frac_1.denominator / 2; i++)                  //  —ÓÍ‡˘ÂÌËÂ ‰Ó·Ë
+		for (int i = 2; i < frac_1.denominator / 2; i++)                  //  –°–æ–∫—Ä–∞—â–µ–Ω–∏–µ –¥—Ä–æ–±–∏
 		{
 			if (frac_1.numerator % i == 0 && frac_1.denominator % i == 0)
 			{
@@ -94,7 +94,7 @@ public:
 		}
 		return frac_1;
 	}
-	Fraction operator/(const Fraction& other)const             //œÂÂ„ÛÁÍ‡ ÓÔÂ‡ÚÓ‡ ‰ÂÎÂÌËˇ
+	Fraction operator/(const Fraction& other)const             //–ü–µ—Ä–µ–≥—Ä—É–∑–∫–∞ –æ–ø–µ—Ä–∞—Ç–æ—Ä–∞ –¥–µ–ª–µ–Ω–∏—è
 	{
 		Fraction frac_1, frac_2;
 		frac_1.numerator = this->intedger * this->denominator + this->numerator;
@@ -103,12 +103,12 @@ public:
 		frac_2.denominator = other.denominator;
 		frac_1.numerator = frac_1.numerator * frac_2.denominator;
 		frac_1.denominator = frac_1.denominator * frac_2.numerator;
-		if (frac_1.numerator > frac_1.denominator)                         // ¬˚‚Ó‰ ˆÂÎÓ„Ó ˜ËÒÎ‡
+		if (frac_1.numerator > frac_1.denominator)                         // –í—ã–≤–æ–¥ —Ü–µ–ª–æ–≥–æ —á–∏—Å–ª–∞
 		{																  
 			frac_1.intedger = frac_1.numerator / frac_1.denominator;	 
 			frac_1.numerator = frac_1.numerator % frac_1.denominator;	  
 		}																  
-		for (int i = 2; i < frac_1.denominator / 2; i++)                  //  —ÓÍ‡˘ÂÌËÂ ‰Ó·Ë
+		for (int i = 2; i < frac_1.denominator / 2; i++)                  //  –°–æ–∫—Ä–∞—â–µ–Ω–∏–µ –¥—Ä–æ–±–∏
 		{																  
 			if (frac_1.numerator % i == 0 && frac_1.denominator % i == 0) 
 			{															  
