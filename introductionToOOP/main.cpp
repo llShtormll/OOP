@@ -54,18 +54,19 @@ public:
 		cout << "CopyConstructor:\t" << this << endl;
 	}
 	//Point(const Point& other) = delete; //Удаляет Конструктор копирования и таким образом запрещает копирование обьектов
-	
-	~Point()
-	{
-		cout << "Destructor:\t\t" << this << endl;
-	}
-	///                    Operators
 	void operator=(const Point& other)
 	{
 		this->x = other.x;
 		this->y = other.y;
 		cout << "CopyAssignment:\t\t" << this << endl;
 	}
+
+	~Point()
+	{
+		cout << "Destructor:\t\t" << this << endl;
+	}
+	///                    Operators
+
 
 	//           Metods:
 	void print()const
@@ -87,6 +88,7 @@ double distance(const Point& A, const Point& B)
 	double y_distance = A.get_y() - B.get_y();
 	return sqrt(x_distance * x_distance + y_distance * y_distance);
 }
+
 
 
 //#define STRUCT_POINT
