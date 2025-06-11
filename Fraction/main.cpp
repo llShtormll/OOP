@@ -18,7 +18,7 @@ public:
 	{
 		return numerator;
 	}
-	int gett_denominator()const
+	int get_denominator()const
 	{
 		return denominator;
 	}
@@ -57,76 +57,20 @@ public:
 		this->numerator = other.numerator;
 		this->denominator = other.denominator;
 	}
-	Fraction operator+(const Fraction& other)const                      //Перегрузка оператора сложения
+	Fraction operator++(int)
 	{
-		Fraction frac_1;
-		if (this->denominator == other.denominator)
-		{
-			frac_1.intedger = this->intedger + other.intedger;
-			frac_1.numerator = this->numerator + other.numerator;
-			frac_1.denominator = this->denominator;
-
-		}
-		else
-		{
-			frac_1.intedger = this->intedger + other.intedger;
-			frac_1.numerator = this->numerator * other.denominator + other.numerator * this->denominator;
-			frac_1.denominator = this->denominator * other.denominator;
-		}
-		if (frac_1.numerator > frac_1.denominator)                         // Вывод целого числа
-		{
-			frac_1.intedger += frac_1.numerator / frac_1.denominator;
-			frac_1.numerator = frac_1.numerator % frac_1.denominator;
-		}
-		for (int i = 2; i < frac_1.denominator / 2; i++)                  //  Сокращение дроби
-		{
-			if (frac_1.numerator % i == 0 && frac_1.denominator % i == 0)
-			{
-				frac_1.numerator /= i;
-				frac_1.denominator /= i;
-			}
-		}
-		if (frac_1.numerator == frac_1.denominator)
-		{
-			frac_1.intedger += 1;
-			frac_1.numerator = 0;
-			frac_1.denominator = 0;
-		}
-		return frac_1;
+		this->intedger++;
+		return *this;
 	}
-	Fraction operator/(const Fraction& other)const             //Перегрузка оператора деления
+	Fraction operator++()
 	{
-		Fraction frac_1, frac_2;
-		frac_1.numerator = this->intedger * this->denominator + this->numerator;
-		frac_2.numerator = other.intedger * other.denominator + other.numerator;
-		frac_1.denominator = this->denominator;
-		frac_2.denominator = other.denominator;
-		frac_1.numerator = frac_1.numerator * frac_2.denominator;
-		frac_1.denominator = frac_1.denominator * frac_2.numerator;
-		if (frac_1.numerator > frac_1.denominator)                         // Вывод целого числа
-		{																  
-			frac_1.intedger = frac_1.numerator / frac_1.denominator;	 
-			frac_1.numerator = frac_1.numerator % frac_1.denominator;	  
-		}																  
-		for (int i = 2; i < frac_1.denominator / 2; i++)                  //  Сокращение дроби
-		{																  
-			if (frac_1.numerator % i == 0 && frac_1.denominator % i == 0) 
-			{															  
-				frac_1.numerator /= i;									  
-				frac_1.denominator /= i;								  
-			}															  
-		}	
-		if (frac_1.numerator == frac_1.denominator)
-		{
-			frac_1.intedger += 1;
-			frac_1.numerator = 0;
-			frac_1.denominator = 0;
-		}
-		return frac_1;
+		++this->intedger;
+		return *this;
 	}
+	
 	void print()
 	{
-		if (intedger > 0 && numerator > 0 && denominator > 0)
+		if (intedger != 0 && numerator != 0 && denominator > 0)
 		{
 			cout << intedger << "|" << numerator << "/" << denominator << endl;
 		}
@@ -134,23 +78,187 @@ public:
 		{
 			cout << intedger << endl;
 		}
-		else
+		else if (intedger == 0 && numerator == 0 && denominator == 0)
+		{
+			cout << '0' << endl;
+		}
+		else 
 		{
 			cout << numerator << "/" << denominator << endl;
 		}
 	}
 
 };
-
-
+Fraction operator-(const int& meaning, const Fraction& other);
+Fraction operator-(const Fraction& other, const int& meaning);
+Fraction operator-(Fraction& left, Fraction& right);
+Fraction operator+(const int& meaning, const Fraction& other);
+Fraction operator+(const Fraction& other, const int& meaning);
+Fraction operator+(const Fraction& left, const Fraction& right);
+Fraction operator*(const int& meaning, const Fraction& other);
+Fraction operator*(const Fraction& left, const int meaning);
+Fraction operator*(const Fraction& left, Fraction& right);
 
 void main()
 {
 	setlocale(LC_ALL, "");
-	Fraction D(2, 3, 5);
-	Fraction A(6, 2, 6);
-	Fraction C = D + A / D;
+	Fraction A(13, 3, 5);
+	Fraction B(7, 3, 7);
+	Fraction C = A * B;
+	Fraction D = B * 3;
 	A.print();
-	D.print();
+	B.print();
 	C.print();
+	D.print();
+}
+
+
+
+
+
+
+
+
+Fraction operator-(const int& meaning,const Fraction& other)//---------------------------------------('2' - A)------------------------------------
+{
+	Fraction other_1;
+	Fraction other_2 = other;
+	if (other.get_intedger() < 0)other_2.set_intedger(other_2.get_intedger() * (-1));
+	if (meaning > 0 && other.get_intedger() < 0)
+	{
+		other_1.set_intedger(meaning - 1);
+		other_1.set_numerator(other_2.get_denominator());
+		other_1.set_denominator(other_2.get_denominator());
+	}
+	else other_1.set_intedger(meaning);
+	other_1.set_intedger(other_1.get_intedger() - other_2.get_intedger());
+	other_1.set_numerator(other_1.get_numerator() - other_2.get_numerator());
+	other_1.set_denominator(other.get_denominator());
+	if (other.get_intedger() < 0)other_1.set_intedger(other_1.get_intedger() * (-1));
+	if (other.get_intedger() < 0 && meaning > 0)
+	{
+		other_1.set_intedger(other_1.get_intedger() - 1);
+		other_1.set_numerator(other_1.get_denominator() - other_1.get_numerator());
+	}
+	for (int i = 2; i < other_1.get_denominator() / 2; i++)
+	{
+		if (other_1.get_numerator() % i == 0 && other_1.get_denominator() % i == 0)
+		{
+			other_1.set_numerator(other_1.get_numerator() / i);
+			other_1.set_denominator(other_1.get_denominator() / i);
+		}
+	}
+	if (other_1.get_numerator() == 0)other_1.set_denominator(0);
+	if (other_1.get_numerator() < 0)other_1.set_numerator(other_1.get_numerator() * (-1));
+	if (other_1.get_numerator() == other_1.get_denominator())
+	{
+		other_1.set_intedger(other_1.get_intedger() + 1);
+		other_1.set_numerator(0);
+		other_1.set_denominator(0);
+	}
+	if (other.get_intedger() < 0)other_1.set_intedger(other_1.get_intedger() * (-1));
+	return other_1;
+}
+Fraction operator-(const Fraction& other, const int& meaning)//--------------------------------(A - '2')---------------------------------
+{
+	Fraction other_1 = other;
+	other_1.set_intedger(other_1.get_intedger() - meaning);
+	if (other.get_intedger() < 0 && meaning < 0)
+	{
+		other_1.set_intedger(other_1.get_intedger() + 1);
+		other_1.set_numerator(other_1.get_denominator() - other_1.get_numerator());
+	}
+	return other_1;
+}
+Fraction operator-(Fraction& left, Fraction& right)//-----------------------------------------------------(A - B)--------------------------------
+{                                                                                                          
+	Fraction other = left;
+	Fraction other_1 = right;
+	other.set_intedger(left.get_intedger() - right.get_intedger());
+	if (left.get_intedger() < 0)other.set_numerator(other.get_numerator() * (-1));
+	if (right.get_intedger() < 0)other_1.set_numerator(other_1.get_numerator() * (-1));
+	other.set_numerator((other.get_numerator() * other_1.get_denominator()) - (other_1.get_numerator() * other.get_denominator()));
+	other.set_denominator(left.get_denominator() * right.get_denominator());
+	if (other.get_intedger() < 0 && other.get_numerator() > 0)
+	{
+		other.set_intedger(other.get_intedger() + 1);
+		other.set_numerator(other.get_denominator() - other.get_numerator());
+	}
+	if (other.get_numerator() < 0)other.set_numerator(other.get_numerator() * (-1));
+	if (other.get_numerator() > other.get_denominator())
+	{
+		(other.get_intedger() > 0 ? other.set_intedger(other.get_intedger() + 1) : other.set_intedger(other.get_intedger() - 1));
+		other.set_numerator(other.get_denominator() - other.get_numerator());
+		if (other.get_numerator() < 0)other.set_numerator(other.get_numerator() * (-1));
+	}
+	for (int i = 2; i < other.get_denominator() / 2; i++)
+	{
+		if (other.get_numerator() % i == 0 && other.get_denominator() % i == 0)
+		{
+			other.set_numerator(other.get_numerator() / i);
+			other.set_denominator(other.get_denominator() / i);
+		}
+	}
+
+	return other;
+}
+Fraction operator+(const int& meaning, const Fraction& other)//------------------------------------('2' + A)-----------------------------
+{
+	Fraction other_1 = other;
+	other_1.set_intedger(meaning + other_1.get_intedger());
+	return other_1;
+}
+Fraction operator+(const Fraction& other, const int& meaning)//------------------------------------(A + '2')----------------------------------
+{
+	Fraction other_1 = other;
+	other_1.set_intedger(other_1.get_intedger() + meaning);
+	if (other_1.get_intedger() < 0 && meaning >= 0)
+	{
+		other_1.set_intedger(other_1.get_intedger() + 1);
+		other_1.set_numerator(other_1.get_denominator() - other_1.get_numerator());
+	}
+	
+	return other_1;
+}
+Fraction operator+(const Fraction& left, const Fraction& right)//----------------------------------(A + B)----------------------------------
+{
+	Fraction other = left;
+	Fraction other_1 = right;
+	other_1.set_intedger(other_1.get_intedger() * (-1));
+	return other - other_1;
+}
+Fraction operator*(const int& meaning, const Fraction& right)//-----------------------------------('2' * A)----------------------------------
+{
+	Fraction other = right;
+	if (other.get_intedger() < 0)other.set_numerator(other.get_numerator() * (-1));
+	other.set_numerator((other.get_intedger() * other.get_denominator() + other.get_numerator()) * meaning);
+	if (other.get_numerator() > other.get_denominator() || other.get_numerator() * (-1) > other.get_denominator())
+	{
+		other.set_intedger(other.get_numerator() / other.get_denominator());
+		other.set_numerator(other.get_numerator() % other.get_denominator());
+	}
+	if (other.get_numerator() < 0)other.set_numerator(other.get_numerator() * (-1));
+	if (other.get_numerator() == 0)other.set_denominator(0);
+	return other;
+}
+Fraction operator*(const Fraction& left, const int meaning)//------------------------------------(A * '2')---------------------------------------
+{
+	return meaning * left;
+}
+Fraction operator*(const Fraction& left, Fraction& right)//--------------------------------------(A * B)----------------------------------------
+{
+	Fraction other = left;
+	Fraction other_1 = right;
+	if (left.get_intedger() < 0)other.set_numerator(other.get_numerator() * (-1));
+	if (right.get_intedger() < 0)other_1.set_numerator(other_1.get_numerator() * (-1));
+	other.set_numerator((other.get_intedger() * other.get_denominator() + other.get_numerator()) * (other_1.get_intedger() * other_1.get_denominator() + other_1.get_numerator()));
+	other.set_denominator(other.get_denominator() * other_1.get_denominator());
+	if (other.get_numerator() > other.get_denominator() || other.get_numerator() * (-1) > other.get_denominator())
+	{
+		other.set_intedger(other.get_numerator() / other.get_denominator());
+		other.set_numerator(other.get_numerator() % other.get_denominator());
+	}
+	if (other.get_numerator() < 0)other.set_numerator(other.get_numerator() * (-1));
+	if (other.get_numerator() == 0)other.set_denominator(0);
+	return other;
 }
