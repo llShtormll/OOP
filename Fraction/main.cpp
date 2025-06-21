@@ -51,12 +51,12 @@ public:
 		this->denominator = 1;
 		cout << "DefaultConstructor:\t" << this << endl;
 	}
-	Fraction(int integer)
+explicit Fraction(int integer)
 	{
 		this->intedger = integer;
 		this->numerator = 0;
 		this->denominator = 1;
-		cout << "Constructor:\t\t" << this << endl;
+		cout << "SingleArgConstructor:\t" << this << endl;
 	}
 	Fraction(int numerator, int denominator)
 	{
@@ -114,6 +114,16 @@ public:
 		return old;
 	}
 	
+	//                  Type-cast operators
+ operator int()const
+	{
+		return intedger + numerator / denominator;
+	}
+
+ operator double()const
+{
+	return intedger + (double)numerator / denominator;
+}
 	
 	//------------------Методы---------------------
 	Fraction& to_improper()
@@ -207,17 +217,19 @@ Fraction operator*(Fraction left, Fraction right)
 		else if (obj.get_intedger() == 0)os << 0;
 		return os;
 	}
-	std::istream& operator>>(std::istream& is, Fraction& obj)
+	std::istream& operator>>(std::istream& cin, Fraction& obj)
 	{
 		const int SIZE = 32;
 		char sz_input[SIZE] = {};
-		is >> sz_input;
-		is.getline(sz_input, SIZE);
+		//cin >> sz_input;
+		cin.getline(sz_input, SIZE);
 		const char delimiters[] = { '/',' ','(',')','.',',',0 };
 		int numbers[3] = {};
 		int n = 0;
-		for (char* pch = strtok(sz_input, delimiters);pch;pch = strtok(NULL, delimiters))numbers[n++] = atoi(pch);
-		for (int i = 0; i < n; i++)cout << numbers[i] << "\t"; cout << endl;
+		for (char* pch = strtok(sz_input, delimiters);
+			pch && n < 3;
+			pch = strtok(NULL, delimiters))numbers[n++] = atoi(pch);
+		//for (int i = 0; i < n; i++)cout << numbers[i] << "\t"; cout << endl;
 		/*-------------
 		Фунция strtpk() разбивает строку на токены.
 		Раздельтель (delimiters) - это символы, по которым нужно делить строку
@@ -225,12 +237,12 @@ Fraction operator*(Fraction left, Fraction right)
 		*/
 		switch (n)
 		{
-		case 1:numbers[0]; break;
-		case 2: Fraction(numbers[0], numbers[1]); break;
-		case 3: Fraction(numbers[0], numbers[1], numbers[3]); break;
+		case 1:obj =  Fraction(numbers[0]); break;
+		case 2:obj =  Fraction(numbers[0], numbers[1]); break;
+		case 3:obj =  Fraction(numbers[0], numbers[1], numbers[2]); break;
 		}
 
-		return is;
+		return cin;
 	}
 
 	//#define CONSTRUCTORS_CHECK
@@ -238,7 +250,8 @@ Fraction operator*(Fraction left, Fraction right)
 	//#define ARITHMETICAL_OPERATORS
 	//#define INCREMENT_DECREMENT
 	//#define COMPARISON_OPERATORS
-    #define ISTREAM
+   // #define ISTREAM
+   //#define CONVERSIONS_FROM_OTHER_TO_CLASS
 
 
 	void main()
@@ -315,6 +328,31 @@ Fraction operator*(Fraction left, Fraction right)
 		cout << A << endl;
 
 #endif // ISTREAM
+#ifdef CONVERSIONS_FROM_OTHER_TO_CLASS
+		Fraction A = (Fraction)5;   //Implicit conversion from less to more
+		cout << A << endl;
+
+		Fraction B;
+		B = Fraction(8);
+		cout << B << endl;
+
+#endif // CONVERSIONS_FROM_OTHER_TO_CLASS
+		/*operator type()
+		{
+			....;
+			....;
+			....;
+		}*/
+
+
+		Fraction A(2, 3, 4);
+		cout << A << endl;
+ 
+		int a = A;
+		cout << a << endl;
+
+		double b = A;
+		cout << b << endl;
 
 	}
 
