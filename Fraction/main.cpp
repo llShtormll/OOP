@@ -1,4 +1,5 @@
-﻿#include<iostream>
+﻿#define _CRT_SECURE_NO_WARNINGS
+#include<iostream>
 
 using namespace std;
 using std::cout;
@@ -178,6 +179,22 @@ Fraction operator*(Fraction left, Fraction right)
 	{
 		return !(left == right);
 	}
+	bool operator>=(Fraction left, Fraction right)
+	{
+		left.to_improper();
+		right.to_improper();
+		return
+			left.get_numerator() * right.get_denominator() >=
+			right.get_numerator() * left.get_denominator();
+	}
+	bool operator<=(Fraction left, Fraction right)
+	{
+		left.to_improper();
+		right.to_improper();
+		return
+			left.get_numerator() * right.get_denominator() <=
+			right.get_numerator() * left.get_denominator();
+	}
 	std::ostream& operator<<(std::ostream& os, const Fraction& obj)
 	{
 		if (obj.get_intedger())os << obj.get_intedger();
@@ -190,12 +207,30 @@ Fraction operator*(Fraction left, Fraction right)
 		else if (obj.get_intedger() == 0)os << 0;
 		return os;
 	}
-	std::istream& operator>>(std::istream& os, Fraction& obj)
+	std::istream& operator>>(std::istream& is, Fraction& obj)
 	{
-		Fraction obj_1;
-		os >> obj_1;
-		this.
-		return os;
+		const int SIZE = 32;
+		char sz_input[SIZE] = {};
+		is >> sz_input;
+		is.getline(sz_input, SIZE);
+		const char delimiters[] = { '/',' ','(',')','.',',',0 };
+		int numbers[3] = {};
+		int n = 0;
+		for (char* pch = strtok(sz_input, delimiters);pch;pch = strtok(NULL, delimiters))numbers[n++] = atoi(pch);
+		for (int i = 0; i < n; i++)cout << numbers[i] << "\t"; cout << endl;
+		/*-------------
+		Фунция strtpk() разбивает строку на токены.
+		Раздельтель (delimiters) - это символы, по которым нужно делить строку
+		Ещкены (tokens) - это элементы, которые нужно достать из строки
+		*/
+		switch (n)
+		{
+		case 1:numbers[0]; break;
+		case 2: Fraction(numbers[0], numbers[1]); break;
+		case 3: Fraction(numbers[0], numbers[1], numbers[3]); break;
+		}
+
+		return is;
 	}
 
 	//#define CONSTRUCTORS_CHECK
@@ -203,6 +238,8 @@ Fraction operator*(Fraction left, Fraction right)
 	//#define ARITHMETICAL_OPERATORS
 	//#define INCREMENT_DECREMENT
 	//#define COMPARISON_OPERATORS
+    #define ISTREAM
+
 
 	void main()
 	{
@@ -270,10 +307,14 @@ Fraction operator*(Fraction left, Fraction right)
 
 		//Fraction A(1, 2, 3);
 		//Fraction B(2, 3, 4);
+		//cout << A / B;
 
+#ifdef ISTREAM
 		Fraction A;
 		cout << "Введите простую дробь: "; cin >> A;
 		cout << A << endl;
+
+#endif // ISTREAM
 
 	}
 
